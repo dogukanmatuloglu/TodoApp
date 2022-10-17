@@ -48,17 +48,14 @@ namespace TodoAppUi.Controllers
                     List<Claim> userClaims = new List<Claim>();
 
                     userClaims.Add(new Claim(ClaimTypes.NameIdentifier, isUser.Id.ToString()));
-                    userClaims.Add(new Claim(ClaimTypes.Name, isUser.UserName));
+                    userClaims.Add(new Claim(ClaimTypes.Name, isUser.FirstName));
                   
                  
 
                     //Veritabanımızdaki role tablosunda kullanıcı hakkında roller varsa onlarıda ekliyoruz
                     //Farzedelim,  fcakiroglu16@outlook.com adlı email admin rolüne sahip,
 
-                    if (isUser.Email == "f-cakiroglu@outlook.com")
-                    {
-                        userClaims.Add(new Claim(ClaimTypes.Role, "admin"));
-                    }
+               
                     //Veritabanımızdaki claim tablosunda kullanıcı hakkında claim'ler varsa onlarıda ekliyoruz.
 
                     var claimsIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
