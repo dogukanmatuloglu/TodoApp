@@ -10,11 +10,13 @@ namespace TodoAppUi.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly int _userId;
 
         public TodoController(AppDbContext context, IHttpContextAccessor contextAccessor)
         {
             _context = context;
             _contextAccessor = contextAccessor;
+            _userId = Convert.ToInt32(_contextAccessor.HttpContext.User.FindFirstValue(claimType: ClaimTypes.NameIdentifier));
         }
         //a
         public IActionResult Index()
@@ -28,13 +30,14 @@ namespace TodoAppUi.Controllers
         {
             
             TodoList todoList = new TodoList();
-            var x=todoListViewModel["Task"];
+            var task=todoListViewModel["Task"];
+            var date = todoListViewModel["Date"];
 
             todoList.PriorityId = 1;
-            todoList.UserId = Convert.ToInt32(_contextAccessor.HttpContext.User.FindFirstValue(claimType: ClaimTypes.NameIdentifier));
-            todoList.Task = x;
-            todoList.ModifiedBy = 1;
-            todoList.CreatedBy = 1;
+            todoList.UserId = _userId;
+            todoList.Task = task;
+            todoList.ModifiedBy = _userId;
+            todoList.CreatedBy = _userId;
             todoList.CreatedDate=DateTime.Now;
             todoList.ModifiedDate=DateTime.Now;
             _context.TodoLists.Add(todoList);
@@ -42,6 +45,11 @@ namespace TodoAppUi.Controllers
 
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult OnComingTask()
+        {
+            return View();
         }
 
         

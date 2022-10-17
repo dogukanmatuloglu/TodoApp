@@ -1,5 +1,6 @@
 ﻿@model List<TodoAppUi.Models.Entities.Concrete.TodoList>
 
+
 <form method="post" asp-controller="Todo" asp-action="Add">
     
     
@@ -8,6 +9,8 @@
 <div class="input-group mb-3 ">
   <span class="input-group-text" id="inputGroup-sizing-default">Yeni Bir Görev Ekle</span>
   <input type="text" class="form-control" name="Task" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="Task">
+  <input type="hidden" name="Date" value="@DateTime.Now.ToShortDateString()" />
+
   
   <button class="btn btn-success" type="submit">Ekle</button>
   

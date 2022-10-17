@@ -8,6 +8,7 @@ namespace TodoAppUi.Models.Entities.Concrete
         public DateTime EndDate { get; set; }
         public Priority Priority { get; set; }
         public User User { get; set; }
+        public bool IsCompleted { get; set; }
         public int UserId { get; set; }
         public int PriorityId { get; set; }
     }

@@ -52,12 +52,6 @@ namespace TodoAppUi.Controllers
                   
                  
 
-                    //Veritabanımızdaki role tablosunda kullanıcı hakkında roller varsa onlarıda ekliyoruz
-                    //Farzedelim,  fcakiroglu16@outlook.com adlı email admin rolüne sahip,
-
-               
-                    //Veritabanımızdaki claim tablosunda kullanıcı hakkında claim'ler varsa onlarıda ekliyoruz.
-
                     var claimsIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                     var authProperties = new AuthenticationProperties
@@ -72,7 +66,7 @@ namespace TodoAppUi.Controllers
         new ClaimsPrincipal(claimsIdentity),
         authProperties);
                     return RedirectToAction("Index","Todo");
-                    //Sadece üye olan kullanıcıların göreceği sayfaya yönlendirme
+                    
                 }
                 else
                 {
