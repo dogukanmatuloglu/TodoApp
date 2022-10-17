@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 using TodoAppUi.Models.Context;
 using TodoAppUi.Models.Entities.Concrete;
 using TodoAppUi.ViewModels;
@@ -19,7 +22,7 @@ namespace TodoAppUi.Controllers
             _userId = Convert.ToInt32(_contextAccessor.HttpContext.User.FindFirstValue(claimType: ClaimTypes.NameIdentifier));
         }
         //a
-        public IActionResult Index()
+        public IActionResult TodayTask()
         {
             var data= _context.TodoLists.ToList();
             return View(data );
@@ -51,7 +54,24 @@ namespace TodoAppUi.Controllers
         {
             return View();
         }
+       
+        public IActionResult MarkAsComplete(int Id)
+        {
+            var entity = _context.TodoLists.FirstOrDefault(x => x.Id == Id);
 
+            if (entity.IsCompleted)
+            {
+                entity.IsCompleted = false;
+            }
+            else
+            {
+                entity.IsCompleted = true;
+            }
+
+            _context.SaveChanges();
+            return null;
+
+        }
         
 
 
