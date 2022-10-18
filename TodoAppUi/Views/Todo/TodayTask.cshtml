@@ -10,6 +10,9 @@
             <span class="input-group-text" id="inputGroup-sizing-default">Yeni Bir Görev Ekle</span>
             <input type="text" class="form-control" name="Task" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="Task">
             <input type="hidden" name="Date" value="@DateTime.Now.ToShortDateString()" />
+            <select class="form-select form-select-sm" name="Priority" aria-label="Default select example" asp-items="@ViewBag.SelectListItems">
+           <option>Öncelik Belirle</option>
+            </select>
 
 
             <button class="btn btn-success" type="submit">Ekle</button>
@@ -42,7 +45,32 @@
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Task</td>
-                <td>Öncelik</td>
+                <td>
+
+                    @if (@item.Priority.Name == "Yüksek")
+                    {
+                        <button type="button" class="btn btn-outline-danger btn-sm">Yüksek</button>
+                    }
+                    else if (@item.Priority.Name == "Orta")
+                    {
+                        <button type="button" class="btn btn-outline-warning btn-sm">Orta</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-outline-success btn-sm">Düşük</button>
+
+                    }
+
+
+
+
+
+
+
+
+
+
+                </td>
                 <td><button class="btn btn-danger">Sil</button> <button class="btn btn-warning">Düzenle</button></td>
                 <td>
                     @*@if (item.IsCompleted)

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using System.Security.Claims;
@@ -24,7 +26,14 @@ namespace TodoAppUi.Controllers
         //a
         public IActionResult TodayTask()
         {
-            var data= _context.TodoLists.ToList();
+            //singleOrDefault birden çok kayıt varsa hata fırlatır
+            //firstOrDefault birden çok kayıttan ilkini getirir.
+            var data = _context.TodoLists.Where(t => t.UserId == _userId && t.CreatedDate.Date==DateTime.Today ).Include(t=>t.Priority).ToList();
+            var selectList = new List<SelectListItem>();
+          var selectListItem=  _context.Priorities.Select(x => new SelectListItem() { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            selectList.AddRange(selectListItem);
+
+            ViewBag.SelectListItems = selectListItem;
             return View(data );
         }
 
@@ -35,8 +44,9 @@ namespace TodoAppUi.Controllers
             TodoList todoList = new TodoList();
             var task=todoListViewModel["Task"];
             var date = todoListViewModel["Date"];
+            var priority = todoListViewModel["Priority"];
 
-            todoList.PriorityId = 1;
+            todoList.PriorityId = Convert.ToInt32(priority);
             todoList.UserId = _userId;
             todoList.Task = task;
             todoList.ModifiedBy = _userId;
@@ -47,7 +57,7 @@ namespace TodoAppUi.Controllers
             _context.SaveChanges();
 
 
-            return RedirectToAction("Index");
+            return RedirectToAction("TodayTask");
         }
 
         public IActionResult OnComingTask()
